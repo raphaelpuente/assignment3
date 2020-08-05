@@ -2,9 +2,29 @@
    File: Assignment3
    Name: Raphael Puente 
    Id: 301075627 
-   Webpage: https://raphaelpuente.github.io/assignment2/index.html*/
+   Webpage: https://raphaelpuente.github.io/assignment3/index.html*/
 
 (function(){
+    
+    function highlightActiveLink() 
+    {
+        let title = document.title;
+        title = title.toLowerCase();
+    
+        let navAnchors = document.querySelectorAll("li a");
+    
+        for (const anchor of navAnchors) 
+        {
+            let anchorString = anchor.getAttribute("href");
+            anchorString = anchorString.substr(0, anchorString.length - 5);
+    
+            if ((title === "home") && (anchorString === "index") || (title === anchorString)) 
+            {
+                anchor.className = "nav-link active";
+            }
+        }
+        return title;
+    }
     
     function loadHeader() {
         let XHR = new XMLHttpRequest();
@@ -19,6 +39,7 @@
                 let header = document.getElementsByTagName("header")[0];
                 let headerData = XHR.responseText;
                 header.innerHTML = headerData;
+                highlightActiveLink();
             }
         });
     }
@@ -73,26 +94,11 @@
 
     function Start()
     {
-           
-        //#region - Applying nav-link active to all navbar elements
-        let title = document.title;
-        title = title.toLowerCase();
-    
-   
-        let navAnchors = document.querySelectorAll("li a");
-    
-        for (const anchor of navAnchors) {
-    
-            let anchorString = anchor.getAttribute("href");
-            anchorString = anchorString.substr(0, anchorString.length - 5);
-    
-            if ((title === "home") && (anchorString === "index") || (title === anchorString)) {
-                anchor.className = "nav-link active";
-            }
-        }
-        //#endregion
         
+        let title = highlightActiveLink();
 
+        loadHeader();
+        loadFooter();
 
         if (title === "home") 
         {
@@ -104,13 +110,8 @@
             addProjectsParagraphs();
         }
 
-        if (title === "contact") 
-        {
-
-        }
            
-        loadHeader();
-        loadFooter();
+
         
     
 
