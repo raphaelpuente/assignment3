@@ -6,10 +6,17 @@
 
 (function(){
     
-    function highlightActiveLink() 
+    function getPageTitle(title) 
     {
-        let title = document.title;
+        title = document.title;
         title = title.toLowerCase();
+        console.log(`The title of this page is: ${title}`);
+        return title; 
+    }
+
+
+    function highlightActiveLink(title) 
+    {        
     
         let navAnchors = document.querySelectorAll("li a");
     
@@ -23,10 +30,12 @@
                 anchor.className = "nav-link active";
             }
         }
-        return title;
     }
     
-    function loadHeader() {
+    function loadHeader(title) 
+    {
+        console.info("Loading header...")
+
         let XHR = new XMLHttpRequest();
 
         XHR.open("GET", "./Views/Partials/header.html");
@@ -39,12 +48,15 @@
                 let header = document.getElementsByTagName("header")[0];
                 let headerData = XHR.responseText;
                 header.innerHTML = headerData;
-                highlightActiveLink();
+                highlightActiveLink(title);
             }
         });
     }
 
-    function loadFooter() {
+    function loadFooter() 
+    {
+        console.info("Loading footer...")
+        
         let XHR = new XMLHttpRequest();
         XHR.open("GET", "./Views/Partials/footer.html");
         XHR.send();
@@ -58,7 +70,8 @@
         });
     }
 
-    function addHomeParagraphs() {
+    function addHomeParagraphs() 
+    {       
         let jumbotron = document.getElementsByClassName("jumbotron")[0];
         let myGreeting = document.createElement("p");
         myGreeting.textContent = "I was born and raised in an industrial city called Monterrey, in the northern part of Mexico. I have a bachelor's degree in Marketing and Advertisement from TecMilenio University. I graduated in 2014 and I had 6 years of experience working as a buyer for FEMSA, one of the biggest companies in Mexico that owns OXXO, a chain of convenience stores with more than 18,000 locations accross Mexico, Colombia, Chile, Peru and the United States.";
@@ -94,27 +107,28 @@
 
     function Start()
     {
+        console.log("App started...");
         
-        let title = highlightActiveLink();
+        let title = document.title;
+        title = getPageTitle(title);
 
-        loadHeader();
+        highlightActiveLink(title);
+        
+        loadHeader(title);
+
+        switch (title) 
+        {
+            case "home":  
+                addHomeParagraphs();
+                break;
+            case "contact":
+                break; 
+            case "projects":
+                addProjectsParagraphs();
+                break;
+        }
+
         loadFooter();
-
-        if (title === "home") 
-        {
-            addHomeParagraphs();
-        }
-
-        if (title === "projects") 
-        {
-            addProjectsParagraphs();
-        }
-
-           
-
-        
-    
-
 
     }
 
